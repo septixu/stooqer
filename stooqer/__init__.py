@@ -1,0 +1,2 @@
+from stooqer import Stock
+
