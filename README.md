@@ -30,7 +30,3 @@ A data interval in a string format. Can be one of below; is daily be default:
 - *m*: monthly
 - *d*: (default) daily
 
-### Class variables
-- *stock_name*: (string) stock ticker
-- *ror*: (DataFrame) rate of return (simple, NOT LOG!) based on closing price
-- *ror_avg*: (int) average rate of return (simple, NOT LOG!)
