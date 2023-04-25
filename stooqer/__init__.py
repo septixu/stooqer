@@ -1,2 +1,1 @@
-from stooqer import Stock
-
+from .stooqer import Stock

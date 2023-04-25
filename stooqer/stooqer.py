@@ -1,8 +1,13 @@
 import requests
 import io
 from pandas import DataFrame, read_csv
-from parsing import to_date_str, bc
 import datetime
+
+def to_date_str(date):
+    if isinstance(date, datetime.datetime):
+        return date.strftime("%Y%m%d")
+    elif isinstance(date, str):
+        return(date)
 
 class Stock(DataFrame):
     
@@ -29,20 +34,10 @@ class Stock(DataFrame):
         
         response = requests.get(url)
         data = response.content.decode('utf-8')
-        stock_data = read_csv(io.StringIO(data), index_col='Date', parse_dates=True)
+        try:
+            stock_data = read_csv(io.StringIO(data), index_col='Date', parse_dates=True)
+        except ValueError:
+            raise ValueError('Ticker is not valid, try with ".US" extension for US stocks')
+        except:
+            raise Exception('Unknown error. Might be caused by excesive use of stooq api')
         super().__init__(stock_data)
-
-        #VARIABLES
-        self.stock_name = ticker
-        self.ror = self['Close'].pct_change()
-        self.ror_avg = self.ror.mean()
-
-    '''
-    def summary(self, column: str = 'Close'): #TODO Dokończyć
-        print(f'{bc.hd}///////////////SUMMARY {self.stock_name}/////////////////{bc.end}\n'
-              f'{bc.blu}{bc.bld}Average rate of return: {bc.end}{bc.grn}{self[column].pct_change().mean()}{bc.end}\n'
-              f'')
-        
-        def to_csv(column): #TODO Dodać eksport do CSV
-            pass
-    '''
